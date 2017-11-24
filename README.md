@@ -1,6 +1,12 @@
 # Rgdev
 
-A Ruby gem that pulls in all of the dependencies for working on RubyGems.
+A Ruby gem to simplify contributing to [RubyGems](https://github.com/rubygems/rubygems).
+
+## Dependencies
+
+1. Docker
+2. Git
+3. Ruby
 
 ## Usage
 
