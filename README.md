@@ -14,7 +14,6 @@ This is a gem meant to make developing RubyGems itself easier, and as such
 doesn't make much since if you're not contributing to RubyGems.
 
     $ git clone https://github.com/rubygems/rubygems.git
-    [...]
     $ cd rubygems
     $ gem install rgdev
     $ rgdev setup
