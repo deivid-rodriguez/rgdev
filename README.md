@@ -12,15 +12,24 @@ by using a Docker-based development environment.
 ## Usage
 
 This is a gem meant to make developing RubyGems itself easier, and as such
-doesn't make much since if you're not contributing to RubyGems.
+doesn't make much sense if you're not contributing to RubyGems.
+
+### First-time setup
 
     $ git clone https://github.com/rubygems/rubygems.git
     $ cd rubygems
     $ gem install rgdev
     $ rgdev setup
+
+### Execute commands in the Docker container
+
+Now, with setup done, you're ready to execute commands inside the Docker container:
+
     $ rgdev <command to run in the Docker container>
 
-And that's it! Have fun, and thanks for contributing to RubyGems!
+**Example**: Running the RubyGems test suite inside the Docker container
+
+    $ rgdev rake test
 
 ## Developing Rgdev
 
