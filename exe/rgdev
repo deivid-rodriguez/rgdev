@@ -11,26 +11,29 @@ if File.basename(Dir.pwd) != "rubygems" && !force_run
   exit 1
 end
 
-def docker(*args)
+def docker(*cmd)
+  workdir = "/home/developer/rubygems"
+  volume  = "#{Dir.pwd}:#{workdir}"
+  uid     = "-u #{ENV['UID']}" if ENV['UID']
+
+  args = "run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev".split(' ')
+
+  if cmd[0] == 'rake' && cmd[1] !~ /^_[0-9.]+_$/
+    # Use required version of rake.
+    cmd = ['rake', '_10.5.0_', *cmd[1..-1]]
+  end
+
+  args += cmd
+
   exec "docker #{args.join(' ')}"
 end
 
 case ARGV[0]
-when "setup"
-  exec "rake _10.5.0_ newb"
 when nil, "-h", "--help"
   puts "Usage: rgdev setup"
   puts "       rgdev [COMMAND]"
+when "setup"
+  docker("rake", "newb")
 else
-  workdir = "/home/developer/rubygems"
-  volume  = "#{Dir.pwd}/rubygems:#{workdir}"
-  uid     = "-u #{ENV['UID']}" if ENV['UID']
-
-  args = "run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev".split(' ')
-  args += ARGV
-
-  # Use required version of rake.
-  args[0..0] = ['rake', '_10.5.0_'] if args[0] == 'rake'
-
-  docker(*args)
+  docker(*ARGV)
 end
