@@ -1,5 +1,5 @@
 require "rgdev/version"
 
 module Rgdev
-  # No code here! This gem is purely for collecting dependencies. :)
+  # No code here! Everything's in exe/rgdev. :)
 end
