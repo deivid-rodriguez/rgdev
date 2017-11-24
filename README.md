@@ -1,6 +1,7 @@
 # Rgdev
 
-A Ruby gem to simplify contributing to [RubyGems](https://github.com/rubygems/rubygems).
+A Ruby gem to simplify contributing to [RubyGems](https://github.com/rubygems/rubygems),
+by using a Docker-based development environment.
 
 ## Dependencies
 
