@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require "open3"
+
+force_run = ARGV.include?("--force")
+ARGV.delete("--force")
+
+if File.basename(Dir.pwd) != "rubygems" && !force_run
+  $stderr.puts "#{$0}: error: expected to be ran from a directory named \`rubygems'."
+  $stderr.puts "Pass --force to attempt anyway."
+  exit 1
+end
+
+def docker(*args)
+  exec "docker #{args.join(' ')}"
+end
+
+case ARGV[0]
+when "setup"
+  exec "rake _10.5.0_ newb"
+when nil, "-h", "--help"
+  puts "Usage: rgdev setup"
+  puts "       rgdev [COMMAND]"
+else
+  workdir = "/home/developer/rubygems"
+  volume  = "#{Dir.pwd}/rubygems:#{workdir}"
+  uid     = "-u #{ENV['UID']}" if ENV['UID']
+
+  args = "run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev".split(' ')
+  args += ARGV
+
+  # Use required version of rake.
+  args[0..0] = ['rake', '_10.5.0_'] if args[0] == 'rake'
+
+  docker(*args)
+end
