@@ -22,7 +22,7 @@ doesn't make much since if you're not contributing to RubyGems.
 
 And that's it! Have fun, and thanks for contributing to RubyGems!
 
-## Development
+## Developing Rgdev
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
