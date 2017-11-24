@@ -11,9 +11,10 @@ doesn't make much since if you're not contributing to RubyGems.
     [...]
     $ cd rubygems
     $ gem install rgdev
-    $ rake newb # Re-run a second time if it fails.
+    $ rgdev setup
+    $ rgdev <command to run in the Docker container>
 
-And that should be it! Have fun, and thanks for contributing to RubyGems!
+And that's it! Have fun, and thanks for contributing to RubyGems!
 
 ## Development
 
