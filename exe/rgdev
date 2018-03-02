@@ -18,6 +18,19 @@ def privileged?
     (File.read(PRIVILEGED_FLAG_FILE) == "true")
 end
 
+def find_or_make_rgdev_home
+  rgdev_home = File.join(File.expand_path("."), ".rgdev-home")
+  rgdev_home_readme_file = File.join(rgdev_home, "README.txt")
+
+  if !File.directory?(rgdev_home)
+    File.mkdir(rgdev_home)
+  end
+
+  File.write(rgdev_home_readme_file, "This directory is an implementation detail of rgdev. You're probably fine ignoring it.")
+
+  rgdev_home
+end
+
 def docker(cmd)
   # the --privileged flag helps with permissions issues.
   privileged = ""
@@ -25,11 +38,12 @@ def docker(cmd)
     privileged_str = "--privileged"
   end
 
+  rgdev_home = find_or_make_rgdev_home
   workdir = "/home/developer/rubygems"
   volume  = "#{Dir.pwd}:#{workdir}"
   uid     = "-u #{ENV['UID']}" if ENV['UID']
 
-  exec "docker run #{privileged_str} -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
+  exec "docker run #{privileged_str} -h rgdev --rm -it -v #{rgdev_home}:/home/developer -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
 end
 
 case ARGV[0]
