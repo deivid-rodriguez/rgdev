@@ -24,7 +24,7 @@ def find_or_make_rgdev_home
   rgdev_home_readme_file = File.join(rgdev_home, "README.txt")
 
   if !File.directory?(rgdev_home)
-    File.mkdir(rgdev_home)
+    FileUtils.mkdir(rgdev_home)
   end
 
   File.write(rgdev_home_readme_file, "This directory is an implementation detail of rgdev. You're probably fine ignoring it.")
