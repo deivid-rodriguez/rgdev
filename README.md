@@ -18,8 +18,8 @@ doesn't make much sense if you're not contributing to RubyGems.
 
     $ git clone https://github.com/rubygems/rubygems.git
     $ cd rubygems
-    $ gem install rgdev
-    $ rgdev setup
+    $ gem install rgdev # Install the rgdev gem.
+    $ rgdev rake setup  # Install RubyGems development dependencies.
 
 ### Execute commands in the Docker container
 
