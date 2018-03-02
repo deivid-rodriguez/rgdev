@@ -5,7 +5,7 @@ require "open3"
 force_run = ARGV.include?("--force")
 ARGV.delete("--force")
 
-PRIVILEGED_FLAG_FILE = ENV['HOME'] + ".rgdev-run-privileged"
+PRIVILEGED_FLAG_FILE = File.join(ENV["HOME"], ".rgdev-run-privileged")
 
 if File.basename(Dir.pwd) != "rubygems" && !force_run
   $stderr.puts "#{$0}: error: expected to be ran from a directory named \`rubygems'."
