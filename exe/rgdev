@@ -16,24 +16,12 @@ def docker(*cmd)
   volume  = "#{Dir.pwd}:#{workdir}"
   uid     = "-u #{ENV['UID']}" if ENV['UID']
 
-  args = "run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev".split(' ')
-
-  if cmd[0] == 'rake' && cmd[1] !~ /^_[0-9.]+_$/
-    # Use required version of rake.
-    cmd = ['rake', '_10.5.0_', *cmd[1..-1]]
-  end
-
-  args += cmd
-
-  exec "docker #{args.join(' ')}"
+  exec "docker run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
 end
 
 case ARGV[0]
 when nil, "-h", "--help"
-  puts "Usage: rgdev setup"
-  puts "       rgdev [COMMAND]"
-when "setup"
-  docker("rake", "newb")
+  puts "Usage:  rgdev [COMMAND]"
 else
   docker(*ARGV)
 end

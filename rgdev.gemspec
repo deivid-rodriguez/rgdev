@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ellen Marie Dash"]
   spec.email         = ["me@duckie.co"]
 
-  spec.summary       = %q{Pulls in all of the dependencies for working on RubyGems.}
+  spec.summary       = %q{A Docker-based development environment for contributing to RubyGems.}
   spec.homepage      = "https://github.com/duckinator/rgdev"
   spec.license       = "MIT"
 
