@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "open3"
+require "fileutils"
 
 force_run = ARGV.include?("--force")
 ARGV.delete("--force")
