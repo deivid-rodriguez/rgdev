@@ -11,12 +11,22 @@ if File.basename(Dir.pwd) != "rubygems" && !force_run
   exit 1
 end
 
+def privileged?
+  File.exist?(ENV['HOME'] + ".rgdev-run-privileged")
+end
+
 def docker(cmd)
+  # the --privileged flag helps with permissions issues.
+  privileged = ""
+  if privileged?
+    privileged_str = "--privileged"
+  end
+
   workdir = "/home/developer/rubygems"
   volume  = "#{Dir.pwd}:#{workdir}"
   uid     = "-u #{ENV['UID']}" if ENV['UID']
 
-  exec "docker run -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
+  exec "docker run #{privileged_str} -h rgdev --rm -it -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
 end
 
 case ARGV[0]
