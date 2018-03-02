@@ -11,7 +11,7 @@ if File.basename(Dir.pwd) != "rubygems" && !force_run
   exit 1
 end
 
-def docker(*cmd)
+def docker(cmd)
   workdir = "/home/developer/rubygems"
   volume  = "#{Dir.pwd}:#{workdir}"
   uid     = "-u #{ENV['UID']}" if ENV['UID']
@@ -23,5 +23,5 @@ case ARGV[0]
 when nil, "-h", "--help"
   puts "Usage:  rgdev [COMMAND]"
 else
-  docker(*ARGV)
+  docker(ARGV.join(" "))
 end
