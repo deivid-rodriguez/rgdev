@@ -5,6 +5,8 @@ require "open3"
 force_run = ARGV.include?("--force")
 ARGV.delete("--force")
 
+PRIVILEGED_FLAG_FILE = ENV['HOME'] + ".rgdev-run-privileged"
+
 if File.basename(Dir.pwd) != "rubygems" && !force_run
   $stderr.puts "#{$0}: error: expected to be ran from a directory named \`rubygems'."
   $stderr.puts "Pass --force to attempt anyway."
@@ -12,7 +14,8 @@ if File.basename(Dir.pwd) != "rubygems" && !force_run
 end
 
 def privileged?
-  File.exist?(ENV['HOME'] + ".rgdev-run-privileged")
+  File.exist?(PRIVILEGED_FLAG_FILE) &&
+    (File.read(PRIVILEGED_FLAG_FILE) == "true")
 end
 
 def docker(cmd)
@@ -32,6 +35,8 @@ end
 case ARGV[0]
 when nil, "-h", "--help"
   puts "Usage:  rgdev [COMMAND]"
+when "--make-privileged"
+  File.write(PRIVILEGED_FLAG_FILE, "true")
 else
   docker(ARGV.join(" "))
 end

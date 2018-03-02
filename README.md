@@ -31,6 +31,12 @@ Now, with setup done, you're ready to execute commands inside the Docker contain
 
     $ rgdev rake test
 
+### Permissions Errors
+
+If you get permissions errors, it's related to Docker's `--privileged`
+flag. You can resolve this by running `rgdev --make-privileged` then
+trying again.
+
 ## Developing Rgdev
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
