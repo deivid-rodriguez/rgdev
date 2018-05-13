@@ -1,5 +1,3 @@
-require "rgdev/version"
-
 module Rgdev
-  # No code here! Everything's in exe/rgdev. :)
+  VERSION = "2.0.2"
 end

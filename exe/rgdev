@@ -1,57 +1,17 @@
 #!/usr/bin/env ruby
 
-require "open3"
-require "fileutils"
-
-force_run = ARGV.include?("--force")
-ARGV.delete("--force")
-
-PRIVILEGED_FLAG_FILE = File.join(ENV["HOME"], ".rgdev-run-privileged")
-
-if File.basename(Dir.pwd) != "rubygems" && !force_run
-  $stderr.puts "#{$0}: error: expected to be ran from a directory named \`rubygems'."
-  $stderr.puts "Pass --force to attempt anyway."
-  exit 1
-end
-
-def privileged?
-  File.exist?(PRIVILEGED_FLAG_FILE) &&
-    (File.read(PRIVILEGED_FLAG_FILE) == "true")
-end
-
-def find_or_make_rgdev_home
-  rgdev_home = File.join(File.expand_path("."), ".rgdev-home")
-  rgdev_home_readme_file = File.join(rgdev_home, "README.txt")
-
-  if !File.directory?(rgdev_home)
-    FileUtils.mkdir(rgdev_home)
-  end
-
-  File.write(rgdev_home_readme_file, "This directory is an implementation detail of rgdev. You're probably fine ignoring it.")
-
-  rgdev_home
-end
-
 def docker(cmd)
-  # the --privileged flag helps with permissions issues.
-  privileged = ""
-  if privileged?
-    privileged_str = "--privileged"
-  end
+  rgdev_home    = File.join(Dir.pwd, ".rgdev-home")
+  docker_home   = "/home/developer"
+  workdir       = File.join(docker_home, "rubygems")
+  volumes       = "-v #{rgdev_home}:#{docker_home} -v #{Dir.pwd}:#{workdir}"
+  uid           = Process.uid
 
-  rgdev_home = find_or_make_rgdev_home
-  workdir = "/home/developer/rubygems"
-  volume  = "#{Dir.pwd}:#{workdir}"
-  uid     = "-u #{ENV['UID']}" if ENV['UID']
+  Dir.mkdir(rgdev_home) unless Dir.exist?(rgdev_home)
 
-  exec "docker run #{privileged_str} -h rgdev --rm -it -v #{rgdev_home}:/home/developer -v #{volume} -w #{workdir} #{uid} duckinator/rubygems-dev #{cmd}"
+  exec "docker run --rm -it -u #{uid} #{volumes} -w #{workdir} whaledo/rgdev #{cmd}"
 end
 
-case ARGV[0]
-when nil, "-h", "--help"
-  puts "Usage:  rgdev [COMMAND]"
-when "--make-privileged"
-  File.write(PRIVILEGED_FLAG_FILE, "true")
-else
-  docker(ARGV.join(" "))
-end
+abort "Usage: rgdev [COMMAND]" if ["--help", "-h", nil].include?(ARGV[0])
+
+docker(ARGV.join(" "))
