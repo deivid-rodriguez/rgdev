@@ -1,15 +1,11 @@
 #!/usr/bin/env ruby
 
 def docker(cmd)
-  rgdev_home    = File.join(Dir.pwd, ".rgdev-home")
-  docker_home   = "/home/developer"
-  workdir       = File.join(docker_home, "rubygems")
-  volumes       = "-v #{rgdev_home}:#{docker_home} -v #{Dir.pwd}:#{workdir}"
+  rgdev_home    = "rgdev-home-#{Dir.pwd.gsub('/', '-')}"
+  volumes       = "-v #{rgdev_home}:/home/developer -v #{Dir.pwd}:#{Dir.pwd}"
   uid           = Process.uid
 
-  Dir.mkdir(rgdev_home) unless Dir.exist?(rgdev_home)
-
-  exec "docker run --rm -it -u #{uid} #{volumes} -w #{workdir} whaledo/rgdev #{cmd}"
+  exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd}"
 end
 
 abort "Usage: rgdev [COMMAND]" if ["--help", "-h", nil].include?(ARGV[0])
