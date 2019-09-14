@@ -1,7 +1,7 @@
-require 'optparse'
+require "optparse"
 
 module Rgdev
-  VERSION = "3.0.2"
+  VERSION = "4.0.0"
 
   RGDEV_HOME = "rgdev-home-#{Dir.pwd.gsub('/', '-').gsub(' ', '-')}"
 
