@@ -2,7 +2,7 @@
 
 def docker(cmd)
   rgdev_home    = "rgdev-home-#{Dir.pwd.gsub('/', '-')}"
-  volumes       = "-v #{rgdev_home}:/home/developer -v #{Dir.pwd}:#{Dir.pwd}"
+  volumes       = "-v #{rgdev_home}:/home/developer:z -v #{Dir.pwd}:#{Dir.pwd}:z"
   uid           = Process.uid
 
   exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd}"
