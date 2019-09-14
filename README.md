@@ -31,6 +31,17 @@ Now, with setup done, you're ready to execute commands inside the Docker contain
 
     $ rgdev rake test
 
+### Removing docker volumes
+
+If you want to remove the docker volume associated with using rgdev in a
+particular directory, you can run these commands:
+
+    $ cd /path/to/directory
+    $ rgdev --reset
+
+In order to use rgdev in that directory again, you'll need to do `rgdev
+rake setup` again.
+
 ## Developing Rgdev
 
 After checking out the repo, run `bundle install` to install dependencies. Then, run `bundle exec rake spec` to run the tests.
