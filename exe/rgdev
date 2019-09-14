@@ -1,13 +1,15 @@
 #!/usr/bin/env ruby
 
-def docker(cmd)
-  rgdev_home    = "rgdev-home-#{Dir.pwd.gsub('/', '-')}"
-  volumes       = "-v #{rgdev_home}:/home/developer:z -v #{Dir.pwd}:#{Dir.pwd}:z"
-  uid           = Process.uid
+require "rgdev"
 
-  exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd}"
+args, opt_parser = Rgdev._parse_args(ARGV)
+
+if args.help
+  puts opt_parser
+elsif args.version
+  puts "rgdev #{Rgdev::VERSION}"
+elsif args.reset
+  Rgdev.reset
+elsif args.command
+  Rgdev.run(args.command)
 end
-
-abort "Usage: rgdev [COMMAND]" if ["--help", "-h", nil].include?(ARGV[0])
-
-docker(ARGV.join(" "))
