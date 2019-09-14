@@ -1,13 +1,24 @@
 #!/usr/bin/env ruby
 
-def docker(cmd)
-  rgdev_home    = "rgdev-home-#{Dir.pwd.gsub('/', '-')}"
-  volumes       = "-v #{rgdev_home}:/home/developer:z -v #{Dir.pwd}:#{Dir.pwd}:z"
-  uid           = Process.uid
+require "rgdev"
 
-  exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd}"
+HELP = "Usage: rgdev [--reset|--version|COMMAND]"
+
+abort "rgdev #{Rgdev::VERSION}" if ARGV.include?("--version")
+
+# If --help or -h are provided, show the help text.
+abort HELP if ["--help", "-h"].include?(ARGV[0])
+
+# If no arguments are provided, show the help text.
+abort HELP if ARGV.length.zero?
+
+# If --reset is provided with _any_ other arguments, it's an error,
+# so just show the help text.
+abort HELP if ARGV[0] == "--reset" && ARGV.length > 1
+
+
+if ARGV[0] == "--reset"
+  Rgdev.remove_home_volume
+else
+  Rgdev.run(ARGV)
 end
-
-abort "Usage: rgdev [COMMAND]" if ["--help", "-h", nil].include?(ARGV[0])
-
-docker(ARGV.join(" "))
