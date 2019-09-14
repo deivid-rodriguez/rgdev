@@ -2,23 +2,14 @@
 
 require "rgdev"
 
-HELP = "Usage: rgdev [--reset|--version|COMMAND]"
+args, opt_parser = Rgdev._parse_args(ARGV)
 
-abort "rgdev #{Rgdev::VERSION}" if ARGV.include?("--version")
-
-# If --help or -h are provided, show the help text.
-abort HELP if ["--help", "-h"].include?(ARGV[0])
-
-# If no arguments are provided, show the help text.
-abort HELP if ARGV.length.zero?
-
-# If --reset is provided with _any_ other arguments, it's an error,
-# so just show the help text.
-abort HELP if ARGV[0] == "--reset" && ARGV.length > 1
-
-
-if ARGV[0] == "--reset"
-  Rgdev.remove_home_volume
-else
-  Rgdev.run(ARGV)
+if args.help
+  puts opt_parser
+elsif args.version
+  puts "rgdev #{Rgdev::VERSION}"
+elsif args.reset
+  Rgdev.reset
+elsif args.command
+  Rgdev.run(args.command)
 end

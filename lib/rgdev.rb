@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Rgdev
   VERSION = "3.0.2"
 
@@ -10,12 +12,35 @@ module Rgdev
     exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd.join(' ')}"
   end
 
-  def self.remove_home_volume()
-    result = `docker volume rm #{RGDEV_HOME}`
-    exit_code = $?
-    unless result.start_with?('Error: No such volume: ')
-      puts result
+  def self.reset
+    exec "docker volume rm #{RGDEV_HOME}"
+  end
+
+
+  Options = Struct.new(:version, :reset, :help, :command)
+  def self._parse_args(argv)
+    argv = argv.dup
+
+    args = Options.new(false, false, false, nil)
+
+    opt_parser = OptionParser.new do |opts|
+      opts.banner = "Usage: rgdev [--reset|--verbose|COMMAND]"
+
+      opts.on("--version", "Show version information and exit.") do
+        args.version = true
+      end
+
+      opts.on("--reset", "Remove all docker volumes used for the current directory.") do
+        args.reset = true
+      end
+
+      opts.on("-h", "--help", "Print this help text.") do
+        args.help = true
+      end
     end
-    exit $?
+
+    opt_parser.parse!(argv)
+    args.command = argv
+    return [args, opt_parser]
   end
 end
