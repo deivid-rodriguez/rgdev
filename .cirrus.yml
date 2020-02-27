@@ -1,0 +1,12 @@
+test_task:
+  container:
+    image: duckinator/rgdev
+  setup_script:
+    - git clone https://github.com/rubygems/rubygems.git $HOME/rubygems/
+    - cd $HOME/rubygems
+    - rake setup
+  script:
+    - cd $HOME/rubygems
+    # Why the heck is this necessary? I don't have to do it locally.
+    - "rm Gemfile && rake update_manifest"
+    - rake test
