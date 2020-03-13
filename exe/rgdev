@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
-require "rgdev"
+# frozen_string_literal: true
+
+require 'rgdev'
 
 args, opt_parser = Rgdev._parse_args(ARGV)
 
