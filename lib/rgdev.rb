@@ -9,7 +9,7 @@ module Rgdev
     volumes = "-v #{RGDEV_HOME}:/home/developer:z -v #{Dir.pwd}:#{Dir.pwd}:z"
     uid     = Process.uid
 
-    exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} whaledo/rgdev #{cmd.join(' ')}"
+    exec "docker run --rm -it -u #{uid} #{volumes} -w #{Dir.pwd} duckinator/rgdev #{cmd.join(' ')}"
   end
 
   def self.reset
