@@ -8,7 +8,7 @@ require 'optparse'
 #   Rgdev.run(cmd)
 #   Rgdev.reset()
 module Rgdev
-  VERSION = '4.0.0'
+  VERSION = '5.0.0'
 
   RGDEV_HOME = "rgdev-home-#{Dir.pwd.gsub('/', '-').gsub(' ', '-')}"
 
