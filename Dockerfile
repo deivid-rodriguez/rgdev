@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11
 
 RUN apk add --no-cache bash git build-base cmake ruby ruby-dev ruby-etc ruby-irb \
         ruby-json ruby-minitest ruby-rake ruby-rdoc ruby-webrick && \
