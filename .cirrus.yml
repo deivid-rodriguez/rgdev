@@ -6,6 +6,7 @@ test_task:
     - cd $HOME/rubygems
     - rake setup
   debug_info_script:
+    - cd $HOME/rubygems
     - ruby --version
     - gem env version
     - bundle version
